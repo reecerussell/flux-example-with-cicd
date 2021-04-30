@@ -1,0 +1,20 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: demo
+  annotations:
+    nginx.ingress.kubernetes.io/client-max-body-size: 2m
+    nginx.ingress.kubernetes.io/proxy-body-size: 2m
+    nginx.ingress.kubernetes.io/rewrite-target: "/$1"
+spec:
+  rules:
+    - host: $(DOMAIN)
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: demo
+                port:
+                  number: 80
